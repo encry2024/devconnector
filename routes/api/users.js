@@ -32,6 +32,8 @@ router.post('/register',
             }
         ).then(user => {
             if (user) {
+                return res.status(400).json({email: 'E-mail already exists'});
+            } else {
                 const avatar = gravatar.url(req.body.email, {
                     s: '200',
                     r: 'pg',
@@ -50,13 +52,13 @@ router.post('/register',
                         if (err) throw err;
 
                         newUser.password = hash;
+                        newUser.name = salt;
+
                         newUser.save()
                             .then(user => res.json(user))
                             .catch(err => console.log(err));
                     });
-                })
-            } else {
-                return res.status(400).json({email: 'E-mail already exists'});
+                });
             }
         })
     }
