@@ -14,18 +14,25 @@ const users = require('./routes/api/users'),
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+// Passport
+const passport = require('passport');
 
-app.get('/', (req, res) => res.send('Hello World'));
+// Passport Middleware
+app.use(passport.initialize());
+
+// Passport Config
+require('./config/passport')(passport);
 
 // Use Routes
 app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
 
-mongoose
-    .connect(db, {useNewUrlParser: true})
+mongoose.connect(db, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
-
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
