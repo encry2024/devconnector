@@ -11,6 +11,7 @@ const User = require('../../models/User');
 
 // Load User Validation Input
 const validateRegistrationInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 // @route   GET     /api/users/test
 // @desc    Tests   users route
@@ -64,7 +65,6 @@ router.post('/register',
                         if (err) throw err;
 
                         newUser.password = hash;
-                        newUser.name = salt;
 
                         newUser.save()
                             .then(user => res.json(user))
@@ -84,13 +84,20 @@ router.post('/login',
         req,
         res
     ) => {
+        const { errors, isValid } = validateLoginInput(req.body);
+
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
+
         const email = req.body.email;
         const password = req.body.password;
 
         User.findOne({email})
             .then(user => {
                 if (!user) {
-                    return res.status(404).json({email: 'User not found'});
+                    errors.email = 'User not found'
+                    return res.status(404).json(errors);
                 }
 
                 bcrypt.compare(password, user.password)
@@ -113,8 +120,9 @@ router.post('/login',
                                     })
                                 });
                         } else {
+                            errors.password = "E-mail or Password is incorrect"
                             return res.status(400)
-                                .json({password: 'E-mail or Password is incorrect'});
+                                .json(errors);
                         }
                     })
             })

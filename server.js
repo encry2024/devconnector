@@ -1,19 +1,24 @@
 // Express
 const express = require('express');
 const app = express();
+
 // Mongoose
 const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
+
 // Port
 const port = process.env.PORT || 5000;
+
 // Routes
 const users = require('./routes/api/users'),
     profile = require('./routes/api/profile'),
     posts = require('./routes/api/posts');
+
 // Body-parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 // Passport
 const passport = require('passport');
 

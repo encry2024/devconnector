@@ -8,5 +8,9 @@
     <orderEntry type="library" name="@types/mongoose" level="application" />
     <orderEntry type="library" name="@types/bcryptjs" level="application" />
     <orderEntry type="library" name="@types/gravatar" level="application" />
+    <orderEntry type="library" name="@types/jsonwebtoken" level="application" />
+    <orderEntry type="library" name="@types/passport-jwt" level="application" />
+    <orderEntry type="library" name="validator" level="project" />
+    <orderEntry type="library" name="is-empty.js" level="project" />
   </component>
 </module>
